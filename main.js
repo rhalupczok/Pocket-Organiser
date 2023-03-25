@@ -186,8 +186,10 @@ class ShoppingCard {
 
         this.items = data;
 
-        data.forEach((value, index) => 
-            shoppingUi.addItem(value));
+        data.forEach((value, index) => {
+            shoppingUi.addItem(value);
+            shoppingUi.addShop(value);
+        });
     }
 
     saveButton(e) {
@@ -219,6 +221,7 @@ class ShoppingCard {
         this.items.push(item);
         shoppingUi.addItem(item);
         this.saveItem();
+        shoppingUi.addShop(item);
     }
 
     saveItem(){
@@ -240,6 +243,9 @@ class ShoppingUi {
         const itemId = e.target.getAttribute("item-id");
         e.target.parentElement.remove();
         shoppingCard.removeitemById(itemId);
+        this.removeShop();
+
+        // console.log(e.target.parentElement.children[2].innerHTML); to del
     }
 
     deleteAll(){
@@ -266,11 +272,63 @@ class ShoppingUi {
         deleteBtn.addEventListener("click", (e)=>this.deleteItem(e));
     }
 
-    // currentShopsList(){
-    //     let shops = [];
+    addShop(item) {
+        let shopFilter = document.getElementById("shop-list");
+        let singleShop = document.createElement("div");
+        let shopFlag = true;
+        singleShop.id = `shop-${item.shop}`
 
-    // }
+        for (let i = 0; i < shopFilter.children.length; i++) {
+            if (singleShop.id === shopFilter.children[i].id) shopFlag = false;
+        }
+        
+        if (shopFlag) {
+            singleShop.innerHTML = `
+            <input type="checkbox" id="${item.shop}" name="${item.shop}">
+            <label for="${item.shop}">${item.shop}</label>
+            `;
+            shopFilter.appendChild(singleShop);} 
+            
+        }
 
+    removeShop(){
+        let shopsInFilterCard = Array.from(document.getElementById("shop-list").children);
+        console.log(shopsInFilterCard);
+        shopsInFilterCard.forEach((el) => el.remove());
+        shoppingCard.items.forEach((value, index) => {
+            shoppingUi.addShop(value);
+        });
+
+    }
+    
+    setShopFilter(e){
+        let data = shoppingCard.items;
+        let shopList = document.querySelectorAll("#shop-list input");
+        
+        this.deleteAll();
+
+        for (let i=0; i < shopList.length; i++) {
+            if (shopList[i].checked) {
+                data.forEach((value, index) => {
+                    if (value.shop === shopList[i].id){
+                        shoppingUi.addItem(value);
+                        shoppingUi.addShop(value);
+                    }
+                })
+                }
+        }
+        
+        // for (let i=1; i <e.target.parentElement.parentElement.children[1].children.length; i++ ){
+        //     console.log(e.target.parentElement.parentElement.children[1].children[i].id);
+        // }
+         
+
+    }
+
+    resetShopFilter(e) {
+        this.deleteAll();
+        shoppingCard.loadData();
+    }
 }
 
 const shoppingUi = new ShoppingUi;
@@ -287,6 +345,10 @@ class StartApp {
     newEntryTask = document.getElementById("new-entry-task");
     newEntryShopping = document.getElementById("new-entry-shopping");
 
+    shopFilterCard = document.getElementById("shop-filter");
+    setFilterBtn = document.getElementById("setFilterBtn");
+    resetFilterBtn = document.getElementById("resetFilterBtn");
+
     saveButtonTask = document.getElementById("saveButtonTask");
     closeButtonTask = document.getElementById("closeButtonTask");
     saveButtonShoping = document.getElementById("saveButtonShoping");
@@ -301,8 +363,12 @@ class StartApp {
         this.shoppingCardBtn.addEventListener("click", (e) => this.changeCard(e));
         this.saveButtonTask.addEventListener("click", (e) => taskList.saveButton(e));
         this.saveButtonShoping.addEventListener("click", (e) => shoppingCard.saveButton(e));
-        
 
+        document.getElementById("shopFilterBtn").addEventListener("click", () => this.shopFilterCard.classList.remove("hidden"))
+        this.setFilterBtn.addEventListener("click", (e) => shoppingUi.setShopFilter(e));
+        this.resetFilterBtn.addEventListener("click", (e) => shoppingUi.resetShopFilter(e));
+
+        
         document.getElementById("new-entry-to-do-btn").addEventListener("click", (e) => this.newEntryCard(e));
         document.getElementById("new-entry-shopping-btn").addEventListener("click", (e) => this.newEntryCard(e));
         this.closeButtonTask.addEventListener("click", (e) => this.newEntryCard(e));
@@ -342,6 +408,8 @@ class StartApp {
             this.newEntryShopping.classList.add("hidden");
         }
     }
+
+  
 }
 
 const startApp = new StartApp;
