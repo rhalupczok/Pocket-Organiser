@@ -348,6 +348,7 @@ class StartApp {
     shopFilterCard = document.getElementById("shop-filter");
     setFilterBtn = document.getElementById("setFilterBtn");
     resetFilterBtn = document.getElementById("resetFilterBtn");
+    closeFilterBtn = document.getElementById("closeFilterBtn");
 
     saveButtonTask = document.getElementById("saveButtonTask");
     closeButtonTask = document.getElementById("closeButtonTask");
@@ -364,7 +365,8 @@ class StartApp {
         this.saveButtonTask.addEventListener("click", (e) => taskList.saveButton(e));
         this.saveButtonShoping.addEventListener("click", (e) => shoppingCard.saveButton(e));
 
-        document.getElementById("shopFilterBtn").addEventListener("click", () => this.shopFilterCard.classList.remove("hidden"))
+        document.getElementById("shopFilterBtn").addEventListener("click", () => this.shopFilterCard.classList.remove("hidden"));
+        this.closeFilterBtn.addEventListener("click", () => this.shopFilterCard.classList.add("hidden"));
         this.setFilterBtn.addEventListener("click", (e) => shoppingUi.setShopFilter(e));
         this.resetFilterBtn.addEventListener("click", (e) => shoppingUi.resetShopFilter(e));
 

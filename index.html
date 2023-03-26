@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="bg">
+        <img src="images/button.png" alt="" class="bg_img bg_img_button">
+        <img src="images/dots.png" alt="" class="bg_img bg_img_dots">
+    </div>
+
     <header class="header">
         <nav id="nav-menu">
             <h1 id="task-card-btn">TO DO</h1>
@@ -49,9 +54,10 @@
                 <h5>Choose shop / shops</h5>
                 <div id="shop-list">
                 </div>
-                <div>
+                <div id="filter-buttons">
                     <button id="setFilterBtn" class="btn">Filter</button>
                     <button id="resetFilterBtn" class="btn">Reset</button>
+                    <button id="closeFilterBtn" class="btn">Close</button>
                 </div>
 
             </div>
@@ -90,7 +96,7 @@
                 <div id="items-list-head">
                     <div>ITEM</div>
                     <div>AMOUNT</div>
-                    <div id="shopFilterBtn">SHOP</div>
+                    <div id="shopFilterBtn"><u>SHOP</u></div>
                     <div>ACTION</div>
                 </div>
             </section>
