@@ -1,6 +1,12 @@
 body {
   margin: 0;
   padding: 0;
+  z-index: 0;
+}
+
+#body {
+  margin: 0;
+  padding: 0;
   width: 100vw;
   height: 100vh;
   background: linear-gradient(135deg, rgb(0, 195, 255), rgb(0, 17, 255));
@@ -10,12 +16,16 @@ body {
   flex-direction: column;
   align-items: center;
   position: relative;
+  overflow: hidden;
+  z-index: 0;
 }
+
 
 .bg_img {
   position: absolute;
   opacity: 0.3;
   z-index: -1;
+  overflow: hidden;
 }
 
 .bg_img_button {
@@ -49,6 +59,7 @@ body {
 
 
 .nav-border {
+  background: rgb(146, 0, 0);
   border-bottom: 5px solid rgb(10, 10, 10);
   border-left: 5px solid rgb(10, 10, 10);
   border-right: 5px solid rgb(10, 10, 10);
