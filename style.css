@@ -305,6 +305,28 @@ padding: 0;
     justify-content: space-around;
   }
 
+  #language {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+  }
+
+  #language a {
+    width: 100px;
+    height: 52px;
+  }
+
+  #language img {
+      scale: 70%;
+    }
+
+  #language img:hover {
+    scale: 100%;
+  }
+
+  
+
 
   
 .hidden {

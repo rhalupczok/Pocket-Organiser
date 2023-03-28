@@ -17,64 +17,64 @@
 
     <header class="header">
         <nav id="nav-menu">
-            <h1 id="task-card-btn">TO DO</h1>
-            <h1 id="shopping-card-btn" class="nav-border">SHOPPING LIST</h1>
+            <h1 id="task-card-btn" cont="TO_DO">TO DO</h1>
+            <h1 id="shopping-card-btn" class="nav-border" cont="SHOPPING_LIST">SHOPPING LIST</h1>
         </nav>
     </header>
 
     <main>
         <section id="to-do-card" class="">
-            <button id="new-entry-to-do-btn" class="new-entry-btn btn">New entry</button>
+            <button id="new-entry-to-do-btn" class="new-entry-btn btn" cont="New_entry">New entry</button>
             <div id="new-entry-task" class="new-entry hidden">
                 <form action="" id="to-do-form" class="new-entry-form" >
                     <div class="row">
-                        <label for="taskName" class="form-label">Task</label>
+                        <label for="taskName" cont="Task">Task</label>
                         <textarea name="text" wrap="soft" required id="taskName" placeholder="Write task"></textarea>
                     </div>
                     <div class="row">
-                        <label for="deadline" class="form-label">Deadline</label>
+                        <label for="deadline" cont="Deadline">Deadline</label>
                         <input type="date" class="form-control" id="deadline">
                     </div>
                     <div>
-                        <button id="saveButtonTask" type="submit" class="btn">Save</button>
-                        <button id="closeButtonTask" type="submit" class="btn">Close</button>
+                        <button id="saveButtonTask" type="submit" class="btn" cont="Save">Save</button>
+                        <button id="closeButtonTask" type="submit" class="btn" cont="Close">Close</button>
                     </div>
                 </form>
             </div>
             <section id="task-list">
                 <div class="single-task-header">
-                    <div>TASK</div>
-                    <div>DEADLINE</div>
-                    <div>ACTION</div>
+                    <div cont="TASK">TASK</div>
+                    <div cont="DEADLINE">DEADLINE</div>
+                    <div cont="EDIT">EDIT</div>
                 </div>
             </section>
         </section>
 
         <section id="shopping-card" class="hidden">
             <div id="shop-filter" class="hidden">
-                <h5>Choose shop / shops</h5>
+                <h5  cont="Choose_shops">Choose shops</h5>
                 <div id="shop-list">
                 </div>
                 <div id="filter-buttons">
-                    <button id="setFilterBtn" class="btn">Filter</button>
-                    <button id="resetFilterBtn" class="btn">Reset</button>
-                    <button id="closeFilterBtn" class="btn">Close</button>
+                    <button id="setFilterBtn" class="btn" cont="Filter">Filter</button>
+                    <button id="resetFilterBtn" class="btn" cont="Reset">Reset</button>
+                    <button id="closeFilterBtn" class="btn" cont="Close">Close</button>
                 </div>
 
             </div>
-            <button id="new-entry-shopping-btn" class="new-entry-btn btn">New entry</button>
+            <button id="new-entry-shopping-btn" class="new-entry-btn btn" cont="New_entry">New entry</button>
             <div id="new-entry-shopping" class="new-entry hidden">
                 <form action="" id="shopping-form" class="new-entry-form" >
                     <div class="row">
-                        <label for="itemName" class="form-label">Item</label>
+                        <label for="itemName" class="form-label" cont="Item">Item</label>
                         <input name="text" wrap="soft" required id="itemName" placeholder="item">
                     </div>
                     <div class="row">
-                        <label for="amount" class="form-label">Amount</label>
+                        <label for="amount" class="form-label" cont="Amount">Amount</label>
                         <input name="text" wrap="soft" id="amount" placeholder="amount">
                     </div>
                     <div class="row">
-                        <label for="shopName" class="form-label">Shop</label>
+                        <label for="shopName" class="form-label" cont="Shop">Shop</label>
                         <input name="text" wrap="soft" id="shopName" placeholder="shop">
                         <select id="shopName-select">
                             <option>-</option>
@@ -87,21 +87,26 @@
                         </select>
                     </div>
                     <div>
-                        <button id="saveButtonShoping" type="submit" class="btn">Save</button>
-                        <button id="closeButtonShopping" type="submit" class="btn">Close</button>
+                        <button id="saveButtonShoping" type="submit" class="btn" cont="Save">Save</button>
+                        <button id="closeButtonShopping" type="submit" class="btn" cont="Close">Close</button>
                     </div>
                 </form>
             </div>
             
             <section id="items-list" class="">
                 <div id="items-list-head">
-                    <div>ITEM</div>
-                    <div>AMOUNT</div>
-                    <div id="shopFilterBtn"><u>SHOP</u></div>
-                    <div>ACTION</div>
+                    <div cont="ITEM">ITEM</div>
+                    <div cont="AMOUNT">AMOUNT</div>
+                    <div id="shopFilterBtn" cont="SHOP"><u>SHOP</u></div>
+                    <div cont="DEL">DEL</div>
                 </div>
             </section>
         </section>
+
+        <div id="language">
+            <a><img id="en-lang-btn" src="images/usa.jpg" alt=""></a>
+            <a><img id="pl-lang-btn" src="images/pl.jpg" alt=""></a>
+        </div>
         
     </main>
         

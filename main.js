@@ -354,11 +354,17 @@ class StartApp {
     closeButtonTask = document.getElementById("closeButtonTask");
     saveButtonShoping = document.getElementById("saveButtonShoping");
     closeButtonShopping = document.getElementById("closeButtonShopping");
+    selectLanguageBtn = document.getElementById("language");
+    
 
 
+    
     init() {
         taskList.loadData();
         shoppingCard.loadData();
+        // language.setLanguage();
+
+        this.selectLanguageBtn.addEventListener("click", (e) => this.selectLanguage(e));
 
         this.taskCardBtn.addEventListener("click", (e) => this.changeCard(e));
         this.shoppingCardBtn.addEventListener("click", (e) => this.changeCard(e));
@@ -396,7 +402,6 @@ class StartApp {
 
     newEntryCard(e){
         e.preventDefault();
-        console.log(e);
         if (e.target.id === "new-entry-to-do-btn") {
             this.newEntryTask.classList.remove("hidden");
         }
@@ -411,6 +416,17 @@ class StartApp {
         }
     }
 
+    selectLanguage(e) {
+        let lang;
+        if (e.target.id === "en-lang-btn") {
+            lang = "en";
+        }
+        if (e.target.id === "pl-lang-btn") {
+            lang = "pl";
+        }
+
+        language.setLanguage(lang);
+    }
   
 }
 
@@ -452,3 +468,70 @@ class Storage {
 }
 
 const storage = new Storage();
+
+
+class Language {
+    dict = {
+        en: {
+            TO_DO: "TO DO",
+            SHOPPING_LIST: "SHOPPING LIST",
+            New_entry: "New entry",
+            Task: "Task",
+            Deadline: "Deadline",
+            Save: "Save",
+            Close: "Close",
+            TASK: "TASK",
+            DEADLINE: "DEADLINE",
+            EDIT: "EDIT",
+            Choose_shops: "Choose shops",
+            Filter: "Filter",
+            Reset: "Reset",
+            Close: "Close",
+            Item: "Item",
+            Amount: "Amount",
+            Shop: "Shop",
+            ITEM: "ITEM",
+            AMOUNT: "AMOUNT",
+            SHOP: "SHOP",
+            DEL: "DEL"
+        },
+        pl: {
+            TO_DO: "LISTA ZADAŃ",
+            SHOPPING_LIST: "LISTA ZAKUPÓW",
+            New_entry: "Nowy wpis",
+            Task: "Zadanie",
+            Deadline: "Termin",
+            Save: "Zapisz",
+            Close: "Zamknij",
+            TASK: "ZADANIE",
+            DEADLINE: "TERMIN",
+            EDIT: "EDYCJA",
+            Choose_shops: "Wybierz sklepy",
+            Filter: "Filtr",
+            Reset: "Reset",
+            Close: "Zamknij",
+            Item: "Przedmiot",
+            Amount: "Ilość",
+            Shop: "Sklep",
+            ITEM: "PRZEDMIOT",
+            AMOUNT: "ILOŚĆ",
+            SHOP: "SKLEP",
+            DEL: "USUŃ"
+        }
+    };
+
+    setLanguage(lang){
+        let contentText = document.querySelectorAll("[cont]");
+        let chosenDict = this.dict[lang];
+        
+        for (let i=0; i < contentText.length; i++) {
+            let content = contentText[i].getAttribute("cont");
+            contentText[i].textContent = chosenDict[content];
+        }
+    };
+
+
+
+}
+
+const language = new Language;
