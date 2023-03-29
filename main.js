@@ -362,16 +362,15 @@ class StartApp {
     init() {
         taskList.loadData();
         shoppingCard.loadData();
-        // language.setLanguage();
 
         this.selectLanguageBtn.addEventListener("click", (e) => this.selectLanguage(e));
-
+        
         this.taskCardBtn.addEventListener("click", (e) => this.changeCard(e));
         this.shoppingCardBtn.addEventListener("click", (e) => this.changeCard(e));
         this.saveButtonTask.addEventListener("click", (e) => taskList.saveButton(e));
         this.saveButtonShoping.addEventListener("click", (e) => shoppingCard.saveButton(e));
 
-        document.getElementById("shopFilterBtn").addEventListener("click", () => this.shopFilterCard.classList.remove("hidden"));
+        document.getElementById("shopFilterBtn").addEventListener("click", () => {this.shopFilterCard.classList.remove("hidden"); moveWindow.dragElement(this.shopFilterCard)});
         this.closeFilterBtn.addEventListener("click", () => this.shopFilterCard.classList.add("hidden"));
         this.setFilterBtn.addEventListener("click", (e) => shoppingUi.setShopFilter(e));
         this.resetFilterBtn.addEventListener("click", (e) => shoppingUi.resetShopFilter(e));
@@ -529,9 +528,47 @@ class Language {
             contentText[i].textContent = chosenDict[content];
         }
     };
+}
+const language = new Language;
 
+class MoveWindow {
+dragElement(elmnt){
+  let pos1 = 0;
+  let pos2 = 0; 
+  let pos3 = 0; 
+  let pos4 = 0;
+  if (document.getElementById(elmnt.id + "-header")) {
+    document.getElementById(elmnt.id + "-header").onmousedown = dragMouseDown;
+  } else {
+    elmnt.onmousedown = dragMouseDown;
+  }
 
+  function dragMouseDown(e){
+    e = e || window.event;
+    e.preventDefault();
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    document.onmousemove = elementDrag;
+  }
 
+  function elementDrag(e){
+    e = e || window.event;
+    e.preventDefault();
+
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
 }
 
-const language = new Language;
+const moveWindow = new MoveWindow;
