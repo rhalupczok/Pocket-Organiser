@@ -539,8 +539,10 @@ dragElement(elmnt){
   let pos4 = 0;
   if (document.getElementById(elmnt.id + "-header")) {
     document.getElementById(elmnt.id + "-header").onmousedown = dragMouseDown;
+    document.getElementById(elmnt.id + "-header").ontouchstart = dragTouchDown;
   } else {
     elmnt.onmousedown = dragMouseDown;
+    elmnt.ontouchstart = dragTouchDown;
   }
 
   function dragMouseDown(e){
@@ -564,9 +566,29 @@ dragElement(elmnt){
     elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
   }
 
+  function dragTouchDown(e){
+    e = e || window.event;
+    pos3 = e.touches[0].clientX;
+    pos4 = e.touches[0].clientY;
+    document.ontouchend = closeDragElement;
+    document.ontouchmove = elementTouchDrag;
+  }
+
+  function elementTouchDrag(e){
+    e = e || window.event;
+    pos1 = pos3 - e.touches[0].clientX;
+    pos2 = pos4 - e.touches[0].clientY;
+    pos3 = e.touches[0].clientX;
+    pos4 = e.touches[0].clientY;
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
   function closeDragElement() {
     document.onmouseup = null;
     document.onmousemove = null;
+    document.ontouchend = null;
+    document.ontouchmove = null;
   }
 }
 }
