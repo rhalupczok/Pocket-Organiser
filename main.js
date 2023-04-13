@@ -1,7 +1,6 @@
-window.onload = function(){
-    console.log("AppStarted");
+window.onload = function () {
     startApp.init();
-}
+};
 
 class Task {
     constructor(task, deadline) {
@@ -20,9 +19,8 @@ class Item {
     }
 }
 
-
 class TaskList {
-    constructor () {
+    constructor() {
         this.tasks = [];
     }
 
@@ -32,8 +30,7 @@ class TaskList {
 
         this.tasks = data;
 
-        data.forEach((value, index) => 
-            taskUi.addTask(value));
+        data.forEach((value, index) => taskUi.addTask(value));
     }
 
     saveButton(e) {
@@ -42,111 +39,108 @@ class TaskList {
         const taskText = document.getElementById("taskName").value;
         let deadline = document.getElementById("deadline").value;
 
-        deadline === "" ?  deadline = "------" : deadline;
-            
+        deadline === "" ? (deadline = "------") : deadline;
 
         console.log(taskText);
         console.log(e);
- 
-    if (taskText === "") return
-     const task = new Task (taskText, deadline)
-    this.addTask(task)
+
+        if (taskText === "") return;
+        const task = new Task(taskText, deadline);
+        this.addTask(task);
     }
 
-    removeTaskById(taskId){
+    removeTaskById(taskId) {
         this.tasks.forEach((el, index) => {
-          if (el.id == taskId) this.tasks.splice(index, 1);  
-        })
+            if (el.id == taskId) this.tasks.splice(index, 1);
+        });
         this.saveTask();
     }
 
-    moveTaskUp(taskId){
+    moveTaskUp(taskId) {
         let arr = this.tasks;
-        for(let i=0; i < arr.length; i++){
+        for (let i = 0; i < arr.length; i++) {
             let el = arr[i];
 
-            if(el.id == taskId) {
-                if(i >=1) {
-                    let temp = arr[i-1];
-                    arr[i-1]=arr[i];
+            if (el.id == taskId) {
+                if (i >= 1) {
+                    let temp = arr[i - 1];
+                    arr[i - 1] = arr[i];
                     arr[i] = temp;
                     break;
                 }
             }
-        };
+        }
 
         this.saveTask();
         taskUi.deleteAll();
         this.loadData();
     }
 
-    moveTaskDown(taskId){
+    moveTaskDown(taskId) {
         let arr = this.tasks;
-        for(let i=0; i < arr.length; i++){
+        for (let i = 0; i < arr.length; i++) {
             let el = arr[i];
 
-            if(el.id == taskId) {
-                if(i < arr.length - 1) {
-                    let temp = arr[i+1];
-                    arr[i+1]=arr[i];
+            if (el.id == taskId) {
+                if (i < arr.length - 1) {
+                    let temp = arr[i + 1];
+                    arr[i + 1] = arr[i];
                     arr[i] = temp;
                     break;
                 }
             }
-        };
+        }
 
         this.saveTask();
         taskUi.deleteAll();
         this.loadData();
     }
 
-    addTask(task){
+    addTask(task) {
         this.tasks.push(task);
         taskUi.addTask(task);
         this.saveTask();
     }
 
-    saveTask(){
+    saveTask() {
         storage.saveTasks(this.tasks);
     }
 }
 
-const taskList = new TaskList;
+const taskList = new TaskList();
 
 class TaskUi {
-
-    clearForm(){
+    clearForm() {
         document.getElementById("taskName").value = "";
         document.getElementById("deadline").value = "";
     }
 
-    deleteTask(e){
+    deleteTask(e) {
         const taskId = e.target.getAttribute("task-id");
         e.target.parentElement.parentElement.remove();
         taskList.removeTaskById(taskId);
     }
 
-    deleteAll(){
+    deleteAll() {
         const allTasks = document.querySelectorAll(".single-task");
         allTasks.forEach((el) => el.remove());
     }
 
-    moveTaskUp(e){
+    moveTaskUp(e) {
         let taskId = e.target.getAttribute("task-id");
         taskList.moveTaskUp(taskId);
-        
     }
 
-    moveTaskDown(e){
+    moveTaskDown(e) {
         let taskId = e.target.getAttribute("task-id");
         taskList.moveTaskDown(taskId);
     }
 
-    addTask(task){
+    addTask(task) {
         const taskList = document.getElementById("task-list");
         const singleTask = document.createElement("div");
 
-        singleTask.classList.add("single-task")
+        singleTask.classList.add("single-task");
         singleTask.innerHTML = `
         <p>${task.task}</p>
         <p>${task.deadline}</p>
@@ -160,23 +154,23 @@ class TaskUi {
 
         this.clearForm();
 
-        let deleteBtn = document.querySelector(`button.del[task-id="${task.id}"]`);
-        deleteBtn.addEventListener("click", (e)=>this.deleteTask(e));
-        let moveUp = document.querySelector(`button.up[task-id="${task.id}"]`)
-        moveUp.addEventListener("click", (e)=>this.moveTaskUp(e));
-        let moveDown = document.querySelector(`button.down[task-id="${task.id}"]`)
-        moveDown.addEventListener("click", (e)=>this.moveTaskDown(e));
+        let deleteBtn = document.querySelector(
+            `button.del[task-id="${task.id}"]`
+        );
+        deleteBtn.addEventListener("click", (e) => this.deleteTask(e));
+        let moveUp = document.querySelector(`button.up[task-id="${task.id}"]`);
+        moveUp.addEventListener("click", (e) => this.moveTaskUp(e));
+        let moveDown = document.querySelector(
+            `button.down[task-id="${task.id}"]`
+        );
+        moveDown.addEventListener("click", (e) => this.moveTaskDown(e));
     }
-
- 
-
 }
 
-const taskUi = new TaskUi;
-
+const taskUi = new TaskUi();
 
 class ShoppingCard {
-    constructor () {
+    constructor() {
         this.items = [];
     }
 
@@ -199,65 +193,61 @@ class ShoppingCard {
         let amount = document.getElementById("amount").value;
         let shopName = document.getElementById("shopName").value;
         let shopNameSelected = document.getElementById("shopName-select").value;
-        console.log(shopNameSelected)
+        console.log(shopNameSelected);
 
-        amount === "" ?  amount = "-" : amount;
-        shopName === "" ?  shopName = shopNameSelected : shopName;
-            
- 
-    if (itemName === "") return
-        const item = new Item (itemName, amount, shopName);
+        amount === "" ? (amount = "-") : amount;
+        shopName === "" ? (shopName = shopNameSelected) : shopName;
+
+        if (itemName === "") return;
+        const item = new Item(itemName, amount, shopName);
         this.addItem(item);
     }
 
-    removeitemById(itemId){
+    removeitemById(itemId) {
         this.items.forEach((el, index) => {
-          if (el.id == itemId) this.items.splice(index, 1);  
-        })
+            if (el.id == itemId) this.items.splice(index, 1);
+        });
         this.saveItem();
     }
 
-    addItem(item){
+    addItem(item) {
         this.items.push(item);
         shoppingUi.addItem(item);
         this.saveItem();
         shoppingUi.addShop(item);
     }
 
-    saveItem(){
+    saveItem() {
         storage.saveItems(this.items);
     }
 }
 
-const shoppingCard = new ShoppingCard;
+const shoppingCard = new ShoppingCard();
 
 class ShoppingUi {
-
-    clearForm(){
+    clearForm() {
         document.getElementById("itemName").value = "";
         document.getElementById("amount").value = "";
         document.getElementById("shopName").value = "";
     }
 
-    deleteItem(e){
+    deleteItem(e) {
         const itemId = e.target.getAttribute("item-id");
         e.target.parentElement.remove();
         shoppingCard.removeitemById(itemId);
         this.removeShop();
-
-        // console.log(e.target.parentElement.children[2].innerHTML); to del
     }
 
-    deleteAll(){
+    deleteAll() {
         const allItems = document.querySelectorAll(".single-item");
         allItems.forEach((el) => el.remove());
     }
 
-    addItem(item){
+    addItem(item) {
         const itemList = document.getElementById("items-list");
         const singleItem = document.createElement("div");
 
-        singleItem.classList.add("single-item")
+        singleItem.classList.add("single-item");
         singleItem.innerHTML = `
         <p>${item.item}</p>
         <p>${item.amount}</p>
@@ -268,61 +258,58 @@ class ShoppingUi {
 
         this.clearForm();
 
-        let deleteBtn = document.querySelector(`button.del[item-id="${item.id}"]`);
-        deleteBtn.addEventListener("click", (e)=>this.deleteItem(e));
+        let deleteBtn = document.querySelector(
+            `button.del[item-id="${item.id}"]`
+        );
+        deleteBtn.addEventListener("click", (e) => this.deleteItem(e));
     }
 
     addShop(item) {
         let shopFilter = document.getElementById("shop-list");
         let singleShop = document.createElement("div");
         let shopFlag = true;
-        singleShop.id = `shop-${item.shop}`
+        singleShop.id = `shop-${item.shop}`;
 
         for (let i = 0; i < shopFilter.children.length; i++) {
             if (singleShop.id === shopFilter.children[i].id) shopFlag = false;
         }
-        
+
         if (shopFlag) {
             singleShop.innerHTML = `
             <input type="checkbox" id="${item.shop}" name="${item.shop}">
             <label for="${item.shop}">${item.shop}</label>
             `;
-            shopFilter.appendChild(singleShop);} 
-            
+            shopFilter.appendChild(singleShop);
         }
+    }
 
-    removeShop(){
-        let shopsInFilterCard = Array.from(document.getElementById("shop-list").children);
+    removeShop() {
+        let shopsInFilterCard = Array.from(
+            document.getElementById("shop-list").children
+        );
         console.log(shopsInFilterCard);
         shopsInFilterCard.forEach((el) => el.remove());
         shoppingCard.items.forEach((value, index) => {
             shoppingUi.addShop(value);
         });
-
     }
-    
-    setShopFilter(e){
+
+    setShopFilter(e) {
         let data = shoppingCard.items;
         let shopList = document.querySelectorAll("#shop-list input");
-        
+
         this.deleteAll();
 
-        for (let i=0; i < shopList.length; i++) {
+        for (let i = 0; i < shopList.length; i++) {
             if (shopList[i].checked) {
                 data.forEach((value, index) => {
-                    if (value.shop === shopList[i].id){
+                    if (value.shop === shopList[i].id) {
                         shoppingUi.addItem(value);
                         shoppingUi.addShop(value);
                     }
-                })
-                }
+                });
+            }
         }
-        
-        // for (let i=1; i <e.target.parentElement.parentElement.children[1].children.length; i++ ){
-        //     console.log(e.target.parentElement.parentElement.children[1].children[i].id);
-        // }
-         
-
     }
 
     resetShopFilter(e) {
@@ -331,13 +318,9 @@ class ShoppingUi {
     }
 }
 
-const shoppingUi = new ShoppingUi;
-
-
-
+const shoppingUi = new ShoppingUi();
 
 class StartApp {
-
     taskCardBtn = document.getElementById("task-card-btn");
     shoppingCardBtn = document.getElementById("shopping-card-btn");
     toDoCard = document.getElementById("to-do-card");
@@ -355,36 +338,56 @@ class StartApp {
     saveButtonShoping = document.getElementById("saveButtonShoping");
     closeButtonShopping = document.getElementById("closeButtonShopping");
     selectLanguageBtn = document.getElementById("language");
-    
 
-
-    
     init() {
         taskList.loadData();
         shoppingCard.loadData();
 
-        this.selectLanguageBtn.addEventListener("click", (e) => this.selectLanguage(e));
-        
+        this.selectLanguageBtn.addEventListener("click", (e) =>
+            this.selectLanguage(e)
+        );
+
         this.taskCardBtn.addEventListener("click", (e) => this.changeCard(e));
-        this.shoppingCardBtn.addEventListener("click", (e) => this.changeCard(e));
-        this.saveButtonTask.addEventListener("click", (e) => taskList.saveButton(e));
-        this.saveButtonShoping.addEventListener("click", (e) => shoppingCard.saveButton(e));
+        this.shoppingCardBtn.addEventListener("click", (e) =>
+            this.changeCard(e)
+        );
+        this.saveButtonTask.addEventListener("click", (e) =>
+            taskList.saveButton(e)
+        );
+        this.saveButtonShoping.addEventListener("click", (e) =>
+            shoppingCard.saveButton(e)
+        );
 
-        document.getElementById("shopFilterBtn").addEventListener("click", () => {this.shopFilterCard.classList.remove("hidden"); moveWindow.dragElement(this.shopFilterCard)});
-        this.closeFilterBtn.addEventListener("click", () => this.shopFilterCard.classList.add("hidden"));
-        this.setFilterBtn.addEventListener("click", (e) => shoppingUi.setShopFilter(e));
-        this.resetFilterBtn.addEventListener("click", (e) => shoppingUi.resetShopFilter(e));
+        document
+            .getElementById("shopFilterBtn")
+            .addEventListener("click", () => {
+                this.shopFilterCard.classList.remove("hidden");
+                moveWindow.dragElement(this.shopFilterCard);
+            });
+        this.closeFilterBtn.addEventListener("click", () =>
+            this.shopFilterCard.classList.add("hidden")
+        );
+        this.setFilterBtn.addEventListener("click", (e) =>
+            shoppingUi.setShopFilter(e)
+        );
+        this.resetFilterBtn.addEventListener("click", (e) =>
+            shoppingUi.resetShopFilter(e)
+        );
 
-        
-        document.getElementById("new-entry-to-do-btn").addEventListener("click", (e) => this.newEntryCard(e));
-        document.getElementById("new-entry-shopping-btn").addEventListener("click", (e) => this.newEntryCard(e));
-        this.closeButtonTask.addEventListener("click", (e) => this.newEntryCard(e));
-        this.closeButtonShopping.addEventListener("click", (e) => this.newEntryCard(e));
-
-
-    
+        document
+            .getElementById("new-entry-to-do-btn")
+            .addEventListener("click", (e) => this.newEntryCard(e));
+        document
+            .getElementById("new-entry-shopping-btn")
+            .addEventListener("click", (e) => this.newEntryCard(e));
+        this.closeButtonTask.addEventListener("click", (e) =>
+            this.newEntryCard(e)
+        );
+        this.closeButtonShopping.addEventListener("click", (e) =>
+            this.newEntryCard(e)
+        );
     }
-    changeCard(e){
+    changeCard(e) {
         if (e.target.id === "task-card-btn") {
             this.toDoCard.classList.remove("hidden");
             this.shoppingCard.classList.add("hidden");
@@ -399,7 +402,7 @@ class StartApp {
         }
     }
 
-    newEntryCard(e){
+    newEntryCard(e) {
         e.preventDefault();
         if (e.target.id === "new-entry-to-do-btn") {
             this.newEntryTask.classList.remove("hidden");
@@ -426,23 +429,20 @@ class StartApp {
 
         language.setLanguage(lang);
     }
-  
 }
 
-const startApp = new StartApp;
+const startApp = new StartApp();
 
 class Storage {
-
     getTasks() {
         let tasks = null;
 
-        if(localStorage.getItem("tasks")!==null) {
-            tasks = JSON.parse(localStorage.getItem("tasks"))
+        if (localStorage.getItem("tasks") !== null) {
+            tasks = JSON.parse(localStorage.getItem("tasks"));
         } else {
             tasks = [];
         }
         return tasks;
-
     }
 
     saveTasks(tasks) {
@@ -452,13 +452,12 @@ class Storage {
     getItems() {
         let items = null;
 
-        if(localStorage.getItem("items")!==null) {
-            items = JSON.parse(localStorage.getItem("items"))
+        if (localStorage.getItem("items") !== null) {
+            items = JSON.parse(localStorage.getItem("items"));
         } else {
             items = [];
         }
         return items;
-
     }
 
     saveItems(items) {
@@ -467,7 +466,6 @@ class Storage {
 }
 
 const storage = new Storage();
-
 
 class Language {
     dict = {
@@ -492,7 +490,7 @@ class Language {
             ITEM: "ITEM",
             AMOUNT: "AMOUNT",
             SHOP: "SHOP",
-            DEL: "DEL"
+            DEL: "DEL",
         },
         pl: {
             TO_DO: "LISTA ZADAŃ",
@@ -515,82 +513,85 @@ class Language {
             ITEM: "PRZEDMIOT",
             AMOUNT: "ILOŚĆ",
             SHOP: "SKLEP",
-            DEL: "USUŃ"
-        }
+            DEL: "USUŃ",
+        },
     };
 
-    setLanguage(lang){
+    setLanguage(lang) {
+        console.log(lang);
         let contentText = document.querySelectorAll("[cont]");
         let chosenDict = this.dict[lang];
-        
-        for (let i=0; i < contentText.length; i++) {
+
+        for (let i = 0; i < contentText.length; i++) {
             let content = contentText[i].getAttribute("cont");
             contentText[i].textContent = chosenDict[content];
         }
-    };
+    }
 }
-const language = new Language;
+const language = new Language();
 
 class MoveWindow {
-dragElement(elmnt){
-  let pos1 = 0;
-  let pos2 = 0; 
-  let pos3 = 0; 
-  let pos4 = 0;
-  if (document.getElementById(elmnt.id + "-header")) {
-    document.getElementById(elmnt.id + "-header").onmousedown = dragMouseDown;
-    document.getElementById(elmnt.id + "-header").ontouchstart = dragTouchDown;
-  } else {
-    elmnt.onmousedown = dragMouseDown;
-    elmnt.ontouchstart = dragTouchDown;
-  }
+    dragElement(elmnt) {
+        let pos1 = 0;
+        let pos2 = 0;
+        let pos3 = 0;
+        let pos4 = 0;
+        if (document.getElementById(elmnt.id + "-header")) {
+            document.getElementById(elmnt.id + "-header").onmousedown =
+                dragMouseDown;
+            document.getElementById(elmnt.id + "-header").ontouchstart =
+                dragTouchDown;
+        } else {
+            elmnt.onmousedown = dragMouseDown;
+            elmnt.ontouchstart = dragTouchDown;
+        }
 
-  function dragMouseDown(e){
-    e = e || window.event;
-    e.preventDefault();
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    document.onmousemove = elementDrag;
-  }
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
 
-  function elementDrag(e){
-    e = e || window.event;
-    e.preventDefault();
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
 
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-  }
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+            elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+        }
 
-  function dragTouchDown(e){
-    e = e || window.event;
-    pos3 = e.touches[0].clientX;
-    pos4 = e.touches[0].clientY;
-    document.ontouchend = closeDragElement;
-    document.ontouchmove = elementTouchDrag;
-  }
+        function dragTouchDown(e) {
+            e = e || window.event;
+            pos3 = e.touches[0].clientX;
+            pos4 = e.touches[0].clientY;
+            document.ontouchend = closeDragElement;
+            document.ontouchmove = elementTouchDrag;
+        }
 
-  function elementTouchDrag(e){
-    e = e || window.event;
-    pos1 = pos3 - e.touches[0].clientX;
-    pos2 = pos4 - e.touches[0].clientY;
-    pos3 = e.touches[0].clientX;
-    pos4 = e.touches[0].clientY;
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-  }
+        function elementTouchDrag(e) {
+            e = e || window.event;
+            pos1 = pos3 - e.touches[0].clientX;
+            pos2 = pos4 - e.touches[0].clientY;
+            pos3 = e.touches[0].clientX;
+            pos4 = e.touches[0].clientY;
+            elmnt.style.top = elmnt.offsetTop - pos2 + "px";
+            elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
+        }
 
-  function closeDragElement() {
-    document.onmouseup = null;
-    document.onmousemove = null;
-    document.ontouchend = null;
-    document.ontouchmove = null;
-  }
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+            document.ontouchend = null;
+            document.ontouchmove = null;
+        }
+    }
 }
-}
 
-const moveWindow = new MoveWindow;
+const moveWindow = new MoveWindow();

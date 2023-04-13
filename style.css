@@ -1,58 +1,61 @@
-body {
-  margin: 0;
-  padding: 0;
-  z-index: 0;
+body,
+html {
+    margin: 0;
+    padding: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 #body {
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(135deg, rgb(0, 195, 255), rgb(0, 17, 255));
-  background-size: cover;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  z-index: 0;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, rgb(0, 195, 255), rgb(0, 17, 255));
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 0;
 }
 
-
 .bg_img {
-  position: absolute;
-  opacity: 0.3;
-  z-index: -1;
-  overflow: hidden;
+    position: absolute;
+    opacity: 0.3;
+    z-index: -1;
+    overflow: hidden;
 }
 
 .bg_img_button {
-  height: 20vh;
-  top: 0;
-  right: 60%;
-  animation: slideDown 30s linear infinite;
+    height: 20vh;
+    top: 0;
+    right: 60%;
+    animation: slideDown 30s linear infinite;
 }
 
 .bg_img_dots {
-  height: 50vh;
-  top: 0;
-  left: 70%;
-  animation: rotate 60s linear infinite;
+    height: 50vh;
+    top: 0;
+    left: 70%;
+    animation: rotate 60s linear infinite;
 }
 
-.header{
+.header {
     width: 100vw;
 }
 
 .movableheader {
-  height: 20px;
-  color: white;
-  background: rgba(0, 0, 0, 0.50);
-  text-align: center;
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
+    height: 20px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
 }
 #nav-menu {
     display: flex;
@@ -66,215 +69,206 @@ body {
     margin: 0;
 }
 
-
 .nav-border {
-  background: rgb(146, 0, 0);
-  border-bottom: 5px solid rgb(10, 10, 10);
-  border-left: 5px solid rgb(10, 10, 10);
-  border-right: 5px solid rgb(10, 10, 10);
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  opacity: 0.5;
+    background: rgb(146, 0, 0);
+    border-bottom: 5px solid rgb(10, 10, 10);
+    border-left: 5px solid rgb(10, 10, 10);
+    border-right: 5px solid rgb(10, 10, 10);
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    opacity: 0.5;
 }
 
 main {
-  width: 90%;
-  height: 90%;
-  margin: 0.5rem;
+    width: 90%;
+    height: 90%;
+    margin: 0.5rem;
 }
-
-
 
 /* ---------------------to_do----------------- */
 
-
 .new-entry-btn {
-  position: absolute;
-  margin: 1rem;
-  right: 10px;
-  bottom: 10px;
-  z-index: 1;
+    position: absolute;
+    margin: 1rem;
+    right: 10px;
+    bottom: 10px;
+    z-index: 1;
 }
 
 /* --------new entry------------------ */
 .new-entry {
-  width: 90vw;
-  background: linear-gradient(to right top, rgba(0,0,0,0.75), rgba(0,0,0,0.25));
-  backdrop-filter: blur(8px);
-  border-radius: 1rem;
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  margin-left: calc(-90vw/2);
-  overflow: auto;
-  text-align: center;
-  z-index: 99;
+    width: 90vw;
+    background: linear-gradient(
+        to right top,
+        rgba(0, 0, 0, 0.75),
+        rgba(0, 0, 0, 0.25)
+    );
+    backdrop-filter: blur(8px);
+    border-radius: 1rem;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    margin-left: calc(-90vw / 2);
+    overflow: auto;
+    text-align: center;
+    z-index: 99;
 }
 
 .new-entry-form {
-  margin: 1rem;
+    margin: 1rem;
 }
 
 .new-entry-form label {
-  display: block;
-  margin: 0;
-  padding: 0;
-  color: white;
-  font-weight: 700;
-  margin: 0;
-  padding: 0;
+    display: block;
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
 }
 
 .new-entry-form textarea {
-  background: rgba(0, 183, 255, 0);
-  color: white;
-  font-weight: 400;
-  margin-bottom: 1rem;
-  width: 90%;
-  height: 100px;
-  resize: none;
+    background: rgba(0, 183, 255, 0);
+    color: white;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    width: 90%;
+    height: 100px;
+    resize: none;
 }
 
 .new-entry-form input {
-  background: rgba(0, 183, 255, 0);
-  color: white;
-  font-weight: 400;
-  margin-bottom: 1rem;
-  width: fit-content;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+    background: rgba(0, 183, 255, 0);
+    color: white;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    width: fit-content;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
-
-
-
-
-
-
-/* --------new entry------------------ */
-
 
 /* -------------------------------------------------------- */
 
 #to-do-card {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
-  border-radius: 1rem;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
+    border-radius: 1rem;
 }
- 
+
+#task-list {
+    max-height: 70vh;
+    overflow-y: scroll;
+}
 
 .single-task {
-  display: grid;
-  grid-template-columns: 1fr 80px 100px;
-  column-gap: 0.5rem;
-  margin: 0.5rem;
-  border-bottom: 1px solid black;
-  font-size: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 80px 100px;
+    column-gap: 0.5rem;
+    margin: 0.5rem;
+    border-bottom: 1px solid black;
+    font-size: 1rem;
 }
 
 .single-task-header {
-  display: grid;
-  grid-template-columns: 1fr 80px 100px;
-  width: 100%;
-  column-gap: 0.5rem;
-  text-align: center;
-  font-weight: 700;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid black;
+    display: grid;
+    grid-template-columns: 1fr 80px 100px;
+    width: 100%;
+    column-gap: 0.5rem;
+    text-align: center;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid black;
 }
 
 .single-task > p {
-margin: 0 ;
-padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .single-task > p:first-of-type:before {
     content: "✘ ";
     color: red;
-  }
-
-.single-task-btn {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  }
-
-.single-task-btn > button {
-  margin: 0;
-  padding: 0;
-  font-weight: 700;
-  width: 30%;
-  height: 1rem;
-
-  }
-/* ------------------------------------------------------------- */
-
-.btn {
-  background: rgb(0, 140, 255);
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  min-width: 30px;
-
 }
 
-
-  /* ---------------------to_do----------------- */
-
-
-  /* ----------shopping_card--------- */
-
-  #shopping-card {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
-  border-radius: 1rem;
-  }
-
-  .single-item {
-    display: grid;
-    grid-template-columns: 4fr 1fr 1fr 1fr;
-    margin: 0.5rem;
-    border-bottom: 1px solid black;
-    font-size: 1rem;
-  }
-
-  .single-item > p, button {
+.single-task-btn {
     margin: 0;
     padding: 0;
-  }
+    width: 100%;
+    height: 100%;
+}
 
-  .single-item > button {
+.single-task-btn > button {
     margin: 0;
     padding: 0;
     font-weight: 700;
     width: 30%;
     height: 1rem;
-  }
+}
+/* ------------------------------------------------------------- */
 
-  #shopFilterBtn {
+.btn {
+    background: rgb(0, 140, 255);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 30px;
+}
+
+/* ---------------------to_do----------------- */
+
+/* ----------shopping_card--------- */
+
+#shopping-card {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
+    border-radius: 1rem;
+}
+
+.single-item {
+    display: grid;
+    grid-template-columns: 4fr 1fr 1fr 1fr;
+    margin: 0.5rem;
+    border-bottom: 1px solid black;
+    font-size: 1rem;
+}
+
+.single-item > p,
+button {
+    margin: 0;
+    padding: 0;
+}
+
+.single-item > button {
+    margin: 0;
+    padding: 0;
+    font-weight: 700;
+    width: 30%;
+    height: 1rem;
+}
+
+#shopFilterBtn {
     color: rgb(0, 247, 255);
-    
-  }
+}
 
-  .single-item > :first-child::before {
+.single-item > :first-child::before {
     content: "✘ ";
     color: red;
-  }
+}
 
-  
-
-  .single-item > :not(:first-child) {
+.single-item > :not(:first-child) {
     justify-self: center;
     align-self: center;
-  }
+}
 
-
-  #items-list {
+#items-list {
     width: 100%;
-  }
+    max-height: 70vh;
+    overflow-y: scroll;
+}
 
-  #items-list-head {
+#items-list-head {
     width: 100%;
     display: grid;
     grid-template-columns: 4fr 1fr 1fr 1fr;
@@ -283,10 +277,14 @@ padding: 0;
     margin-top: 0.5rem;
     margin-bottom: 1rem;
     border-bottom: 1px solid black;
-  }
+}
 
-  #shop-filter {
-    background: linear-gradient(to right top, rgba(0,0,0,0.75), rgba(0,0,0,0.25));
+#shop-filter {
+    background: linear-gradient(
+        to right top,
+        rgba(0, 0, 0, 0.75),
+        rgba(0, 0, 0, 0.25)
+    );
     backdrop-filter: blur(8px);
     border-radius: 1rem;
     position: absolute;
@@ -296,58 +294,83 @@ padding: 0;
     right: 100px;
     padding: 0;
     color: white;
-  }
+}
 
-  #shop-filter > h5 {
+#shop-filter > h5 {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    text-align: center
-  }
+    text-align: center;
+}
 
-  #shop-filter .btn {
+#shop-filter .btn {
     padding: 0.2rem;
     margin-top: 2rem;
-  }
+}
 
-  #filter-buttons {
+#filter-buttons {
     display: flex;
     justify-content: space-around;
-  }
+}
 
-  #language {
+#language {
     position: absolute;
     bottom: 20px;
     left: 20px;
     display: flex;
-  }
+}
 
-  #language a {
+#language a {
     width: 100px;
     height: 52px;
-  }
+}
 
-  #language img {
-      scale: 70%;
-    }
+#language img {
+    scale: 70%;
+}
 
-  #language img:hover {
+#language img:hover {
     scale: 100%;
-  }
+}
 
-  
-
-
-  
 .hidden {
-  display: none;
+    display: none;
 }
 
 @keyframes slideDown {
-  from {transform: translateY(-20vh)}
-  to {transform: translateY(100vh);}
+    from {
+        transform: translateY(-20vh);
+    }
+    to {
+        transform: translateY(100vh);
+    }
 }
 
 @keyframes rotate {
-  from {transform: rotate(0deg);}
-  to {transform: rotate(360deg);}
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* scrollbar */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #00000000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #006eff;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #000000;
 }
