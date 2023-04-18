@@ -24,6 +24,17 @@ class TaskList {
         this.tasks = [];
     }
 
+    newEntry = document.getElementById("new-entry-task");
+    newBtn = document
+        .getElementById("new-entry-to-do-btn")
+        .addEventListener("click", (e) => this.newEntryCard(e));
+    saveBtn = document
+        .getElementById("saveButtonTask")
+        .addEventListener("click", (e) => this.saveButton(e));
+    closeBtn = document
+        .getElementById("closeButtonTask")
+        .addEventListener("click", (e) => this.newEntryCard(e));
+
     loadData() {
         const data = storage.getTasks();
         if (data == null || data == undefined) return;
@@ -102,6 +113,16 @@ class TaskList {
         this.saveTask();
     }
 
+    newEntryCard(e) {
+        e.preventDefault();
+        if (e.target.id === "new-entry-to-do-btn") {
+            this.newEntry.classList.remove("hidden");
+        }
+        if (e.target.id === "closeButtonTask") {
+            this.newEntry.classList.add("hidden");
+        }
+    }
+
     saveTask() {
         storage.saveTasks(this.tasks);
     }
@@ -174,6 +195,17 @@ class ShoppingCard {
         this.items = [];
     }
 
+    newEntry = document.getElementById("new-entry-shopping");
+    newBtn = document
+        .getElementById("new-entry-shopping-btn")
+        .addEventListener("click", (e) => this.newEntryCard(e));
+    saveBtn = document
+        .getElementById("saveButtonShoping")
+        .addEventListener("click", (e) => this.saveButton(e));
+    closeBtn = document
+        .getElementById("closeButtonShopping")
+        .addEventListener("click", (e) => this.newEntryCard(e));
+
     loadData() {
         const data = storage.getItems();
         if (data == null || data == undefined) return;
@@ -217,6 +249,16 @@ class ShoppingCard {
         shoppingUi.addShop(item);
     }
 
+    newEntryCard(e) {
+        e.preventDefault();
+        if (e.target.id === "new-entry-shopping-btn") {
+            this.newEntry.classList.remove("hidden");
+        }
+        if (e.target.id === "closeButtonShopping") {
+            this.newEntry.classList.add("hidden");
+        }
+    }
+
     saveItem() {
         storage.saveItems(this.items);
     }
@@ -225,6 +267,26 @@ class ShoppingCard {
 const shoppingCard = new ShoppingCard();
 
 class ShoppingUi {
+    shopFilterCard = document.getElementById("shop-filter");
+
+    shopFilterBtn = document
+        .getElementById("shopFilterBtn")
+        .addEventListener("click", () => {
+            this.shopFilterCard.classList.remove("hidden");
+            moveWindow.dragElement(this.shopFilterCard);
+        });
+    setBtn = document
+        .getElementById("setFilterBtn")
+        .addEventListener("click", (e) => shoppingUi.setShopFilter(e));
+    resetBtn = document
+        .getElementById("resetFilterBtn")
+        .addEventListener("click", (e) => shoppingUi.resetShopFilter(e));
+    closeBtn = document
+        .getElementById("closeFilterBtn")
+        .addEventListener("click", () =>
+            this.shopFilterCard.classList.add("hidden")
+        );
+
     clearForm() {
         document.getElementById("itemName").value = "";
         document.getElementById("amount").value = "";
@@ -287,10 +349,9 @@ class ShoppingUi {
         let shopsInFilterCard = Array.from(
             document.getElementById("shop-list").children
         );
-        console.log(shopsInFilterCard);
         shopsInFilterCard.forEach((el) => el.remove());
         shoppingCard.items.forEach((value, index) => {
-            shoppingUi.addShop(value);
+            this.addShop(value);
         });
     }
 
@@ -304,8 +365,8 @@ class ShoppingUi {
             if (shopList[i].checked) {
                 data.forEach((value, index) => {
                     if (value.shop === shopList[i].id) {
-                        shoppingUi.addItem(value);
-                        shoppingUi.addShop(value);
+                        this.addItem(value);
+                        this.addShop(value);
                     }
                 });
             }
@@ -321,22 +382,10 @@ class ShoppingUi {
 const shoppingUi = new ShoppingUi();
 
 class StartApp {
-    taskCardBtn = document.getElementById("task-card-btn");
-    shoppingCardBtn = document.getElementById("shopping-card-btn");
+    navMenu = document.getElementById("nav-menu");
     toDoCard = document.getElementById("to-do-card");
     shoppingCard = document.getElementById("shopping-card");
-    newEntryTask = document.getElementById("new-entry-task");
-    newEntryShopping = document.getElementById("new-entry-shopping");
 
-    shopFilterCard = document.getElementById("shop-filter");
-    setFilterBtn = document.getElementById("setFilterBtn");
-    resetFilterBtn = document.getElementById("resetFilterBtn");
-    closeFilterBtn = document.getElementById("closeFilterBtn");
-
-    saveButtonTask = document.getElementById("saveButtonTask");
-    closeButtonTask = document.getElementById("closeButtonTask");
-    saveButtonShoping = document.getElementById("saveButtonShoping");
-    closeButtonShopping = document.getElementById("closeButtonShopping");
     selectLanguageBtn = document.getElementById("language");
 
     init() {
@@ -344,90 +393,26 @@ class StartApp {
         shoppingCard.loadData();
 
         this.selectLanguageBtn.addEventListener("click", (e) =>
-            this.selectLanguage(e)
+            language.selectLanguage(e)
         );
 
-        this.taskCardBtn.addEventListener("click", (e) => this.changeCard(e));
-        this.shoppingCardBtn.addEventListener("click", (e) =>
-            this.changeCard(e)
-        );
-        this.saveButtonTask.addEventListener("click", (e) =>
-            taskList.saveButton(e)
-        );
-        this.saveButtonShoping.addEventListener("click", (e) =>
-            shoppingCard.saveButton(e)
-        );
-
-        document
-            .getElementById("shopFilterBtn")
-            .addEventListener("click", () => {
-                this.shopFilterCard.classList.remove("hidden");
-                moveWindow.dragElement(this.shopFilterCard);
-            });
-        this.closeFilterBtn.addEventListener("click", () =>
-            this.shopFilterCard.classList.add("hidden")
-        );
-        this.setFilterBtn.addEventListener("click", (e) =>
-            shoppingUi.setShopFilter(e)
-        );
-        this.resetFilterBtn.addEventListener("click", (e) =>
-            shoppingUi.resetShopFilter(e)
-        );
-
-        document
-            .getElementById("new-entry-to-do-btn")
-            .addEventListener("click", (e) => this.newEntryCard(e));
-        document
-            .getElementById("new-entry-shopping-btn")
-            .addEventListener("click", (e) => this.newEntryCard(e));
-        this.closeButtonTask.addEventListener("click", (e) =>
-            this.newEntryCard(e)
-        );
-        this.closeButtonShopping.addEventListener("click", (e) =>
-            this.newEntryCard(e)
-        );
+        this.navMenu.addEventListener("click", (e) => this.changeCard(e));
     }
     changeCard(e) {
+        const taskCardBtn = document.getElementById("task-card-btn");
+        const shoppingCardBtn = document.getElementById("shopping-card-btn");
         if (e.target.id === "task-card-btn") {
             this.toDoCard.classList.remove("hidden");
             this.shoppingCard.classList.add("hidden");
-            this.taskCardBtn.classList.remove("nav-border");
-            this.shoppingCardBtn.classList.add("nav-border");
+            taskCardBtn.classList.remove("nav-border");
+            shoppingCardBtn.classList.add("nav-border");
         }
         if (e.target.id === "shopping-card-btn") {
             this.shoppingCard.classList.remove("hidden");
             this.toDoCard.classList.add("hidden");
-            this.shoppingCardBtn.classList.remove("nav-border");
-            this.taskCardBtn.classList.add("nav-border");
+            shoppingCardBtn.classList.remove("nav-border");
+            taskCardBtn.classList.add("nav-border");
         }
-    }
-
-    newEntryCard(e) {
-        e.preventDefault();
-        if (e.target.id === "new-entry-to-do-btn") {
-            this.newEntryTask.classList.remove("hidden");
-        }
-        if (e.target.id === "new-entry-shopping-btn") {
-            this.newEntryShopping.classList.remove("hidden");
-        }
-        if (e.target.id === "closeButtonTask") {
-            this.newEntryTask.classList.add("hidden");
-        }
-        if (e.target.id === "closeButtonShopping") {
-            this.newEntryShopping.classList.add("hidden");
-        }
-    }
-
-    selectLanguage(e) {
-        let lang;
-        if (e.target.id === "en-lang-btn") {
-            lang = "en";
-        }
-        if (e.target.id === "pl-lang-btn") {
-            lang = "pl";
-        }
-
-        language.setLanguage(lang);
     }
 }
 
@@ -517,8 +502,15 @@ class Language {
         },
     };
 
-    setLanguage(lang) {
-        console.log(lang);
+    selectLanguage(e) {
+        let lang;
+        if (e.target.id === "en-lang-btn") {
+            lang = "en";
+        }
+        if (e.target.id === "pl-lang-btn") {
+            lang = "pl";
+        }
+
         let contentText = document.querySelectorAll("[cont]");
         let chosenDict = this.dict[lang];
 
