@@ -2,6 +2,25 @@ window.onload = function () {
     startApp.init();
 };
 
+class BaseUi {
+    constructor() {
+        this.eventListeners = [];
+    }
+
+    addEventListener(selector, event, callback) {
+        const element = document.querySelector(selector);
+        element.addEventListener(event, callback);
+        this.eventListeners.push({ element, event, callback });
+    }
+
+    removeAllEventListeners() {
+        this.eventListeners.forEach(({ element, event, callback }) => {
+            element.removeEventListener(event, callback);
+        });
+        this.eventListeners = [];
+    }
+}
+
 class Task {
     constructor(task, deadline) {
         this.task = task;
@@ -23,7 +42,6 @@ class TaskList {
     constructor() {
         this.tasks = [];
     }
-
     newEntry = document.getElementById("new-entry-task");
     newBtn = document
         .getElementById("new-entry-to-do-btn")
@@ -37,24 +55,16 @@ class TaskList {
 
     loadData() {
         const data = storage.getTasks();
-        if (data == null || data == undefined) return;
-
+        if (data === null || data === undefined) return;
         this.tasks = data;
-
-        data.forEach((value, index) => taskUi.addTask(value));
+        data.forEach((value) => taskUi.addTask(value));
     }
 
     saveButton(e) {
         e.preventDefault();
-
         const taskText = document.getElementById("taskName").value;
         let deadline = document.getElementById("deadline").value;
-
         deadline === "" ? (deadline = "------") : deadline;
-
-        console.log(taskText);
-        console.log(e);
-
         if (taskText === "") return;
         const task = new Task(taskText, deadline);
         this.addTask(task);
@@ -66,42 +76,33 @@ class TaskList {
         });
         this.saveTask();
     }
-
     moveTaskUp(taskId) {
-        let arr = this.tasks;
+        const arr = this.tasks;
         for (let i = 0; i < arr.length; i++) {
-            let el = arr[i];
-
-            if (el.id == taskId) {
-                if (i >= 1) {
-                    let temp = arr[i - 1];
-                    arr[i - 1] = arr[i];
-                    arr[i] = temp;
-                    break;
-                }
+            const el = arr[i];
+            if (el.id == taskId && i >= 1) {
+                const temp = arr[i - 1];
+                arr[i - 1] = arr[i];
+                arr[i] = temp;
+                break;
             }
         }
-
         this.saveTask();
         taskUi.deleteAll();
         this.loadData();
     }
 
     moveTaskDown(taskId) {
-        let arr = this.tasks;
+        const arr = this.tasks;
         for (let i = 0; i < arr.length; i++) {
             let el = arr[i];
-
-            if (el.id == taskId) {
-                if (i < arr.length - 1) {
-                    let temp = arr[i + 1];
-                    arr[i + 1] = arr[i];
-                    arr[i] = temp;
-                    break;
-                }
+            if (el.id == taskId && i < arr.length - 1) {
+                const temp = arr[i + 1];
+                arr[i + 1] = arr[i];
+                arr[i] = temp;
+                break;
             }
         }
-
         this.saveTask();
         taskUi.deleteAll();
         this.loadData();
@@ -122,23 +123,39 @@ class TaskList {
             this.newEntry.classList.add("hidden");
         }
     }
-
     saveTask() {
         storage.saveTasks(this.tasks);
     }
 }
-
 const taskList = new TaskList();
 
-class TaskUi {
+class TaskUi extends BaseUi {
+    constructor() {
+        super();
+        this.addEventListener("#task-list", "click", (e) =>
+            this.handleTaskListClick(e)
+        );
+    }
+
+    handleTaskListClick(e) {
+        const taskId = e.target.getAttribute("task-id");
+        const target = e.target;
+        if (e.target.classList.contains("del")) {
+            this.deleteTask(taskId, target);
+        } else if (e.target.classList.contains("up")) {
+            this.moveTaskUp(taskId);
+        } else if (e.target.classList.contains("down")) {
+            this.moveTaskDown(taskId);
+        }
+    }
+
     clearForm() {
         document.getElementById("taskName").value = "";
         document.getElementById("deadline").value = "";
     }
 
-    deleteTask(e) {
-        const taskId = e.target.getAttribute("task-id");
-        e.target.parentElement.parentElement.remove();
+    deleteTask(taskId, target) {
+        target.parentElement.parentElement.remove();
         taskList.removeTaskById(taskId);
     }
 
@@ -147,20 +164,17 @@ class TaskUi {
         allTasks.forEach((el) => el.remove());
     }
 
-    moveTaskUp(e) {
-        let taskId = e.target.getAttribute("task-id");
+    moveTaskUp(taskId) {
         taskList.moveTaskUp(taskId);
     }
 
-    moveTaskDown(e) {
-        let taskId = e.target.getAttribute("task-id");
+    moveTaskDown(taskId) {
         taskList.moveTaskDown(taskId);
     }
 
     addTask(task) {
         const taskList = document.getElementById("task-list");
         const singleTask = document.createElement("div");
-
         singleTask.classList.add("single-task");
         singleTask.innerHTML = `
         <p>${task.task}</p>
@@ -172,22 +186,9 @@ class TaskUi {
         </div>
         `;
         taskList.appendChild(singleTask);
-
         this.clearForm();
-
-        let deleteBtn = document.querySelector(
-            `button.del[task-id="${task.id}"]`
-        );
-        deleteBtn.addEventListener("click", (e) => this.deleteTask(e));
-        let moveUp = document.querySelector(`button.up[task-id="${task.id}"]`);
-        moveUp.addEventListener("click", (e) => this.moveTaskUp(e));
-        let moveDown = document.querySelector(
-            `button.down[task-id="${task.id}"]`
-        );
-        moveDown.addEventListener("click", (e) => this.moveTaskDown(e));
     }
 }
-
 const taskUi = new TaskUi();
 
 class ShoppingCard {
@@ -209,10 +210,8 @@ class ShoppingCard {
     loadData() {
         const data = storage.getItems();
         if (data == null || data == undefined) return;
-
         this.items = data;
-
-        data.forEach((value, index) => {
+        data.forEach((value) => {
             shoppingUi.addItem(value);
             shoppingUi.addShop(value);
         });
@@ -224,12 +223,10 @@ class ShoppingCard {
         const itemName = document.getElementById("itemName").value;
         let amount = document.getElementById("amount").value;
         let shopName = document.getElementById("shopName").value;
-        let shopNameSelected = document.getElementById("shopName-select").value;
-        console.log(shopNameSelected);
-
+        const shopNameSelected =
+            document.getElementById("shopName-select").value;
         amount === "" ? (amount = "-") : amount;
         shopName === "" ? (shopName = shopNameSelected) : shopName;
-
         if (itemName === "") return;
         const item = new Item(itemName, amount, shopName);
         this.addItem(item);
@@ -266,21 +263,33 @@ class ShoppingCard {
 
 const shoppingCard = new ShoppingCard();
 
-class ShoppingUi {
-    shopFilterCard = document.getElementById("shop-filter");
+class ShoppingUi extends BaseUi {
+    constructor() {
+        super();
+        this.addEventListener("#items-list, #shopFilterBtn", "click", (e) =>
+            this.handleItemsListClick(e)
+        );
+    }
 
-    shopFilterBtn = document
-        .getElementById("shopFilterBtn")
-        .addEventListener("click", () => {
+    handleItemsListClick(e) {
+        const itemId = e.target.getAttribute("item-id");
+        const target = e.target;
+        if (target.classList.contains("del")) {
+            this.deleteItem(itemId, target);
+        } else if (target.parentElement.id == "shopFilterBtn") {
             this.shopFilterCard.classList.remove("hidden");
             moveWindow.dragElement(this.shopFilterCard);
-        });
+        }
+    }
+
+    shopFilterCard = document.getElementById("shop-filter");
+
     setBtn = document
         .getElementById("setFilterBtn")
-        .addEventListener("click", (e) => shoppingUi.setShopFilter(e));
+        .addEventListener("click", (e) => this.setShopFilter(e));
     resetBtn = document
         .getElementById("resetFilterBtn")
-        .addEventListener("click", (e) => shoppingUi.resetShopFilter(e));
+        .addEventListener("click", (e) => this.resetShopFilter(e));
     closeBtn = document
         .getElementById("closeFilterBtn")
         .addEventListener("click", () =>
@@ -293,9 +302,8 @@ class ShoppingUi {
         document.getElementById("shopName").value = "";
     }
 
-    deleteItem(e) {
-        const itemId = e.target.getAttribute("item-id");
-        e.target.parentElement.remove();
+    deleteItem(itemId, target) {
+        target.parentElement.remove();
         shoppingCard.removeitemById(itemId);
         this.removeShop();
     }
@@ -317,18 +325,12 @@ class ShoppingUi {
         <button item-id="${item.id}" class="btn del">DEL</button>
         `;
         itemList.appendChild(singleItem);
-
         this.clearForm();
-
-        let deleteBtn = document.querySelector(
-            `button.del[item-id="${item.id}"]`
-        );
-        deleteBtn.addEventListener("click", (e) => this.deleteItem(e));
     }
 
     addShop(item) {
-        let shopFilter = document.getElementById("shop-list");
-        let singleShop = document.createElement("div");
+        const shopFilter = document.getElementById("shop-list");
+        const singleShop = document.createElement("div");
         let shopFlag = true;
         singleShop.id = `shop-${item.shop}`;
 
@@ -344,26 +346,22 @@ class ShoppingUi {
             shopFilter.appendChild(singleShop);
         }
     }
-
     removeShop() {
         let shopsInFilterCard = Array.from(
             document.getElementById("shop-list").children
         );
         shopsInFilterCard.forEach((el) => el.remove());
-        shoppingCard.items.forEach((value, index) => {
+        shoppingCard.items.forEach((value) => {
             this.addShop(value);
         });
     }
-
     setShopFilter(e) {
-        let data = shoppingCard.items;
-        let shopList = document.querySelectorAll("#shop-list input");
-
+        const data = shoppingCard.items;
+        const shopList = document.querySelectorAll("#shop-list input");
         this.deleteAll();
-
         for (let i = 0; i < shopList.length; i++) {
             if (shopList[i].checked) {
-                data.forEach((value, index) => {
+                data.forEach((value) => {
                     if (value.shop === shopList[i].id) {
                         this.addItem(value);
                         this.addShop(value);
@@ -372,30 +370,25 @@ class ShoppingUi {
             }
         }
     }
-
     resetShopFilter(e) {
         this.deleteAll();
         shoppingCard.loadData();
     }
 }
-
 const shoppingUi = new ShoppingUi();
 
 class StartApp {
     navMenu = document.getElementById("nav-menu");
     toDoCard = document.getElementById("to-do-card");
     shoppingCard = document.getElementById("shopping-card");
-
     selectLanguageBtn = document.getElementById("language");
 
     init() {
         taskList.loadData();
         shoppingCard.loadData();
-
         this.selectLanguageBtn.addEventListener("click", (e) =>
             language.selectLanguage(e)
         );
-
         this.navMenu.addEventListener("click", (e) => this.changeCard(e));
     }
     changeCard(e) {
@@ -415,36 +408,28 @@ class StartApp {
         }
     }
 }
-
 const startApp = new StartApp();
 
 class Storage {
     getTasks() {
-        let tasks = null;
+        const tasks =
+            localStorage.getItem("tasks") !== null
+                ? JSON.parse(localStorage.getItem("tasks"))
+                : [];
 
-        if (localStorage.getItem("tasks") !== null) {
-            tasks = JSON.parse(localStorage.getItem("tasks"));
-        } else {
-            tasks = [];
-        }
         return tasks;
     }
-
     saveTasks(tasks) {
         localStorage.setItem("tasks", JSON.stringify(tasks));
     }
 
     getItems() {
-        let items = null;
-
-        if (localStorage.getItem("items") !== null) {
-            items = JSON.parse(localStorage.getItem("items"));
-        } else {
-            items = [];
-        }
+        const items =
+            localStorage.getItem("items") !== null
+                ? JSON.parse(localStorage.getItem("items"))
+                : [];
         return items;
     }
-
     saveItems(items) {
         localStorage.setItem("items", JSON.stringify(items));
     }
@@ -453,7 +438,11 @@ class Storage {
 const storage = new Storage();
 
 class Language {
-    dict = {
+    actions = {
+        EN: "en-lang-btn",
+        PL: "pl-lang-btn",
+    };
+    translations = {
         en: {
             TO_DO: "TO DO",
             SHOPPING_LIST: "SHOPPING LIST",
@@ -466,9 +455,8 @@ class Language {
             DEADLINE: "DEADLINE",
             EDIT: "EDIT",
             Choose_shops: "Choose shops",
-            Filter: "Filter",
+            Apply: "Apply",
             Reset: "Reset",
-            Close: "Close",
             Item: "Item",
             Amount: "Amount",
             Shop: "Shop",
@@ -489,9 +477,8 @@ class Language {
             DEADLINE: "TERMIN",
             EDIT: "EDYCJA",
             Choose_shops: "Wybierz sklepy",
-            Filter: "Filtr",
+            Apply: "Zastosuj",
             Reset: "Reset",
-            Close: "Zamknij",
             Item: "Przedmiot",
             Amount: "Ilość",
             Shop: "Sklep",
@@ -503,21 +490,13 @@ class Language {
     };
 
     selectLanguage(e) {
-        let lang;
-        if (e.target.id === "en-lang-btn") {
-            lang = "en";
-        }
-        if (e.target.id === "pl-lang-btn") {
-            lang = "pl";
-        }
+        const lang =
+            this.translations[e.target.id === this.actions.EN ? "en" : "pl"];
 
-        let contentText = document.querySelectorAll("[cont]");
-        let chosenDict = this.dict[lang];
-
-        for (let i = 0; i < contentText.length; i++) {
-            let content = contentText[i].getAttribute("cont");
-            contentText[i].textContent = chosenDict[content];
-        }
+        document.querySelectorAll("[cont]").forEach((element) => {
+            const content = element.getAttribute("cont");
+            element.textContent = lang[content] || content;
+        });
     }
 }
 const language = new Language();
